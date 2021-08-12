@@ -11,3 +11,4 @@ Supervisor performs the following tasks
   - Installing and updating of apps
   - Keeping `server`, `engine` and `client` up to date.
   - File creation
+- **Upkeep of other segments** supervisor is tasked with keeping `server`, `engine` and `client` online.

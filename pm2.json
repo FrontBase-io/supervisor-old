@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "name": "Supervisor",
+      "script": "/opt/frontbase/system/supervisor/dist/supervisor.js",
+      "watch": true,
+      "exp_backoff_restart_delay": 10,
+      "args": "--no-daemon"
+    },
+    {
+      "name": "Server",
+      "script": "/opt/frontbase/system/server/dist/server.js",
+      "watch": true,
+      "exp_backoff_restart_delay": 10,
+      "args": "--no-daemon"
+    }
+  ]
+}
