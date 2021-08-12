@@ -1,0 +1,29 @@
+{
+  "name": "frontbase-supervisor",
+  "version": "1.0.0",
+  "description": "FrontBase.io: Supervisor is responsible for keeping the app online and OS-level interactions.",
+  "main": "index.js",
+  "repository": "https://github.com/FrontBase-io/supervisor",
+  "author": "Vic van Cooten",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "initialise": "node dist/startupChecks.js && yarn startSupervisor",
+    "startSupervisor": "node dist/supervisor.js"
+  },
+  "dependencies": {
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^16.4.13",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.0",
+    "node-fetch": "^2.6.1",
+    "tsc": "^2.0.3",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "pm2": "^5.1.0",
+    "ts-node": "^10.2.0"
+  }
+}
