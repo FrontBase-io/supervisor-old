@@ -21,7 +21,6 @@ async function main() {
   try {
     await client.connect();
     const databasesList = await client.db().admin().listDatabases();
-    let databaseExists = false;
     let db;
     //@ts-ignore
     databasesList.databases.forEach((_db) => {
