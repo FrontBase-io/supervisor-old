@@ -215,6 +215,7 @@ const installClient = (step: ScriptStepType, key: string, db) =>
         await db.collection("objects").insertOne({
           meta: { model: "app" },
           name: step.meta.name,
+          key: step.key,
           color: step.meta.color,
         });
         console.log();
