@@ -18,6 +18,7 @@
     "buildSupervisor": "tsc"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongodb": "^4.1.0",
     "node-fetch": "^2.6.1",

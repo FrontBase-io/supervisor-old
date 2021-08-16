@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import installApp from "./actions/apps/install";
 const express = require("express");
 const path = require("path");
+require("dotenv").config();
 
 // This file performs a database check
 // If everything is in order it will start the actual supervisor
@@ -11,8 +12,10 @@ async function main() {
   console.log("(init) Checking database state...");
 
   // we'll add code here soon
+  console.log(process.env.DBURL);
+
   const uri =
-    "mongodb://root:ceYbc6VDwf2K3p38Y648Tm6PuDJVaBvL@192.168.0.2:29019/FrontBase?authSource=admin&replicaSet=replicaset&readPreference=primaryPreferred&directConnection=true&ssl=false&appname=Frontbase%20Server";
+    "mongodb://" + process.env.DBURL + "&appname=Frontbase%20Supervisor";
   const client: MongoClient = new MongoClient(uri, {
     //@ts-ignore
     useNewUrlParser: true,
