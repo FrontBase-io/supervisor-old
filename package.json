@@ -11,7 +11,7 @@
     "initialise": "yarn build && node dist/startupChecks.js && yarn start",
     "update": "yarn updateClient && yarn updateServer && yarn updateSupervisor",
     "updateClient": "git -C /opt/frontbase/system/client pull && yarn --cwd ../client install && yarn --cwd ../client build",
-    "updateServer": "git -C /opt/frontbase/system/server reset --hard && git -C/opt/frontbase/system/server pull && yarn --cwd ../server install && yarn --cwd ../server build && yarn restartServer",
+    "updateServer": "git -C /opt/frontbase/system/server reset --hard && git -C /opt/frontbase/system/server pull && yarn --cwd ../server install && yarn --cwd ../server build && yarn restartServer",
     "updateSupervisor": "git -C /opt/frontbase/system/supervisor reset --hard && git -C /opt/frontbase/system/supervisor pull && yarn --cwd ../supervisor install && yarn build && yarn restartSupervisor",
     "logs": "pm2 logs --time --merge-logs",
     "start": "pm2 start ./pm2.json && yarn logs",
