@@ -12,7 +12,6 @@ async function main() {
   console.log("(init) Checking database state...");
 
   // we'll add code here soon
-  console.log(process.env.DBURL);
 
   const uri =
     "mongodb://" + process.env.DBURL + "&appname=Frontbase%20Supervisor";
