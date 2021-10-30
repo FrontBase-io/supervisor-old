@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { ColorType } from "../../Utils/Type";
+import { ColorType } from "../../Utils/Types";
 var fs = require("fs");
 
 interface AppManifestType {
