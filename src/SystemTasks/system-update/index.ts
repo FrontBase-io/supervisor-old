@@ -12,8 +12,8 @@ const SystemUpdate = async (
   let task = await updateTask(inputTask, {
     progress: 1,
     log: [
-      ...(inputTask.log || ["Task started"]),
-      `Client: Looking for updates`,
+      ...(inputTask.log || [{ time: new Date(), label: "Task started" }]),
+      { time: new Date(), label: "Client: Looking for updates" },
     ],
   });
 
@@ -26,7 +26,10 @@ const SystemUpdate = async (
     updateApplied = true;
     task = await updateTask(task, {
       progress: 10,
-      log: [...task.log, "Client: Installing update"],
+      log: [
+        ...task.log,
+        { time: new Date(), label: "Client: Installing update" },
+      ],
     });
 
     await shell.exec(
@@ -37,7 +40,10 @@ const SystemUpdate = async (
   // Step 2: Server
   task = await updateTask(task, {
     progress: 25,
-    log: [...task.log, "Server: Looking for updates"],
+    log: [
+      ...task.log,
+      { time: new Date(), label: "Server: Looking for updates" },
+    ],
   });
 
   result = await shell.exec("git -C /opt/frontbase/system/server pull");
@@ -45,7 +51,10 @@ const SystemUpdate = async (
     updateApplied = true;
     task = await updateTask(task, {
       progress: 30,
-      log: [...task.log, "Server: Installing update"],
+      log: [
+        ...task.log,
+        { time: new Date(), label: "Server: Installing update" },
+      ],
     });
 
     result = await shell.exec("yarn --cwd ../server install");
@@ -54,13 +63,19 @@ const SystemUpdate = async (
   // Step 3: Engine
   task = await updateTask(task, {
     progress: 50,
-    log: [...task.log, "Engine: Looking for updates"],
+    log: [
+      ...task.log,
+      { time: new Date(), label: "Engine: Looking for updates" },
+    ],
   });
   result = await shell.exec("git -C /opt/frontbase/system/engine pull");
   if (!result.match("up to date")) {
     task = await updateTask(task, {
       progress: 55,
-      log: [...task.log, "Engine: Installing update"],
+      log: [
+        ...task.log,
+        { time: new Date(), label: "Engine: Installing update" },
+      ],
     });
 
     result = await shell.exec("yarn --cwd ../engine install");
@@ -69,20 +84,32 @@ const SystemUpdate = async (
   // Step 5: Supervisor
   task = await updateTask(task, {
     progress: 90,
-    log: [...task.log, "Supervisor: Looking for updates"],
+    log: [
+      ...task.log,
+      { time: new Date(), label: "Supervisor: Looking for updates" },
+    ],
   });
   result = await shell.exec("git -C /opt/frontbase/system/supervisor pull");
   if (!result.match("up to date")) {
     task = await updateTask(task, {
       progress: 95,
-      log: [...task.log, "Supervisor: Installing update"],
+      log: [
+        ...task.log,
+        { time: new Date(), label: "Supervisor: Installing update" },
+      ],
     });
 
     result = await shell.exec("yarn --cwd ../supervisor install");
   }
   task = await updateTask(task, {
     progress: 100,
-    log: [...task.log, updateApplied ? "update-applied" : "no-update-found"],
+    log: [
+      ...task.log,
+      {
+        time: new Date(),
+        label: updateApplied ? "update-applied" : "no-update-found",
+      },
+    ],
     done: true,
   });
 };
