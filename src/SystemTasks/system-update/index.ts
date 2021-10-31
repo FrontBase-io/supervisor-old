@@ -28,7 +28,7 @@ const SystemUpdate = async (
       progress: 10,
       log: [
         ...task.log,
-        { time: new Date(), label: "Client: Installing update" },
+        { time: new Date(), label: "-> Client: Installing update" },
       ],
     });
 
@@ -53,7 +53,7 @@ const SystemUpdate = async (
       progress: 30,
       log: [
         ...task.log,
-        { time: new Date(), label: "Server: Installing update" },
+        { time: new Date(), label: "-> Server: Installing update" },
       ],
     });
 
@@ -74,7 +74,7 @@ const SystemUpdate = async (
       progress: 55,
       log: [
         ...task.log,
-        { time: new Date(), label: "Engine: Installing update" },
+        { time: new Date(), label: "-> Engine: Installing update" },
       ],
     });
 
@@ -95,7 +95,7 @@ const SystemUpdate = async (
       progress: 95,
       log: [
         ...task.log,
-        { time: new Date(), label: "Supervisor: Installing update" },
+        { time: new Date(), label: "-> Supervisor: Installing update" },
       ],
     });
 
