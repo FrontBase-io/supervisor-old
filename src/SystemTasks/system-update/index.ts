@@ -6,81 +6,81 @@ const SystemUpdate = async (
   updateTask: (
     task: SystemTaskObjectType,
     fieldsToUpdate: { [key: string]: any }
-  ) => SystemTaskObjectType
+  ) => Promise<SystemTaskObjectType>
 ) => {
-  let task = inputTask;
   // Indicate that we've started
-  task = updateTask(task, {
+  let task = await updateTask(inputTask, {
     progress: 1,
-    log: [...(task.log || []), `Task started`],
+    log: [
+      ...(inputTask.log || ["Task started"]),
+      `Client: Looking for updates`,
+    ],
   });
 
   let updateApplied = false;
+
   // Step 1: Client
   let result = await shell.exec("git -C /opt/frontbase/system/client pull");
   // Todo: does language matter here?
   if (!result.match("up to date")) {
     updateApplied = true;
-    console.log("Client update found. Installing and recompiling.");
-    task = updateTask(task, {
+    task = await updateTask(task, {
       progress: 10,
-      log: [...task.log, "Updates found. Installing and recompiling client."],
+      log: [...task.log, "Client: Installing update"],
     });
 
     await shell.exec(
-      "yarn --cwd ../Client install && yarn --cwd ../Client build"
+      "yarn --cwd ../client install && yarn --cwd ../client build"
     );
   }
 
   // Step 2: Server
-  task = updateTask(task, {
+  task = await updateTask(task, {
     progress: 25,
-    log: [...task.log, "Finding server updates"],
+    log: [...task.log, "Server: Looking for updates"],
   });
 
   result = await shell.exec("git -C /opt/frontbase/system/server pull");
   if (!result.match("up to date")) {
     updateApplied = true;
-    task = updateTask(task, {
+    task = await updateTask(task, {
       progress: 30,
-      log: [...task.log, "Server: Installing dependencies"],
+      log: [...task.log, "Server: Installing update"],
     });
 
-    result = await shell.exec("yarn --cwd ../Server install");
+    result = await shell.exec("yarn --cwd ../server install");
   }
 
   // Step 3: Engine
-  console.log("Server: Installing dependencies");
-  task = updateTask(task, {
+  task = await updateTask(task, {
     progress: 50,
-    log: [...task.log, "Looking for engine updates"],
+    log: [...task.log, "Engine: Looking for updates"],
   });
   result = await shell.exec("git -C /opt/frontbase/system/engine pull");
   if (!result.match("up to date")) {
-    task = updateTask(task, {
+    task = await updateTask(task, {
       progress: 55,
-      log: [...task.log, "Engine: Installing dependencies"],
+      log: [...task.log, "Engine: Installing update"],
     });
 
     result = await shell.exec("yarn --cwd ../engine install");
   }
 
   // Step 5: Supervisor
-  console.log("Supervisor: Installing dependencies");
-  task = updateTask(task, {
+  task = await updateTask(task, {
     progress: 90,
-    log: [...task.log, "Looking for supervisor updates"],
+    log: [...task.log, "Supervisor: Looking for updates"],
   });
   result = await shell.exec("git -C /opt/frontbase/system/supervisor pull");
   if (!result.match("up to date")) {
-    task = updateTask(task, {
+    task = await updateTask(task, {
       progress: 95,
-      log: [...task.log, "Supervisor: Installing dependencies"],
+      log: [...task.log, "Supervisor: Installing update"],
     });
 
     result = await shell.exec("yarn --cwd ../supervisor install");
   }
-  task = updateTask(task, {
+  task = await updateTask(task, {
     progress: 100,
     log: [...task.log, updateApplied ? "update-applied" : "no-update-found"],
     done: true,

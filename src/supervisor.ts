@@ -26,13 +26,20 @@ async function main() {
       .on("change", (change) => {
         if (change.operationType === "insert") {
           const document = change.fullDocument as SystemTaskObjectType;
-          const updateTask = (task, fieldsToUpdate: { [key: string]: any }) => {
-            db.collection("objects").updateOne(
-              { _id: document._id },
-              { $set: { ...fieldsToUpdate } }
-            );
-            return { ...task, ...fieldsToUpdate } as SystemTaskObjectType;
-          };
+          const updateTask = (task, fieldsToUpdate: { [key: string]: any }) =>
+            new Promise<SystemTaskObjectType>((resolve) => {
+              db.collection("objects")
+                .updateOne(
+                  { _id: document._id },
+                  { $set: { ...fieldsToUpdate } }
+                )
+                .then(() =>
+                  resolve({
+                    ...task,
+                    ...fieldsToUpdate,
+                  })
+                );
+            });
           if (document.meta.model === "system-task") {
             switch (document.type) {
               case "system-update":
