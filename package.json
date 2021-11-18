@@ -10,10 +10,11 @@
   "scripts": {
     "initialise": "yarn build && node dist/startupChecks.js && yarn start",
     "update": "yarn updateClient && yarn updateServer && yarn updateEngine && yarn updateSupervisor",
-    "updateClient": "git -C /opt/frontbase/system/client pull && yarn --cwd ../client install && yarn --cwd ../client build",
+    "updateClient": "git -C /opt/frontbase/system/client pull && yarn --cwd ../client install && yarn updateClientApps && yarn --cwd ../client build",
     "updateServer": "git -C /opt/frontbase/system/server reset --hard && git -C /opt/frontbase/system/server pull && yarn --cwd ../server install && yarn --cwd ../server build && yarn restartServer",
     "updateEngine": "git -C /opt/frontbase/system/engine reset --hard && git -C /opt/frontbase/system/engine pull && yarn --cwd ../engine install && yarn --cwd ../engine build && yarn restartEngine",
     "updateSupervisor": "git -C /opt/frontbase/system/supervisor reset --hard && git -C /opt/frontbase/system/supervisor pull && yarn --cwd ../supervisor install && yarn build && yarn restartSupervisor",
+    "updateClientApps": "node dist/updateClientApps.js",
     "logs": "pm2 logs --time --merge-logs",
     "start": "pm2 start ./pm2.json && yarn logs",
     "stop": "pm2 stop ./pm2.json",
