@@ -25,7 +25,7 @@ async function main() {
     console.log(`---> Updating ${curr}...`);
 
     await shell.exec(
-      `yarn --cwd ../client add frontbase-${curr}-client@latest`
+      `yarn --cwd ../client add @frontbase/${curr}-client@latest`
     );
 
     return curr;
