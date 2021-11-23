@@ -20,6 +20,13 @@
       "watch": true,
       "exp_backoff_restart_delay": 10,
       "args": "--no-daemon"
+    },
+    {
+      "name": "App-Server",
+      "script": "/opt/frontbase/system/app-server/dist/server.js",
+      "watch": true,
+      "exp_backoff_restart_delay": 10,
+      "args": "--no-daemon"
     }
   ]
 }
