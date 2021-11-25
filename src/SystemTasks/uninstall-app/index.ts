@@ -2,7 +2,7 @@ import { SystemTaskObjectType } from "../../Utils/Types";
 import axios from "axios";
 import { Db, ObjectId } from "mongodb";
 
-const InstallApp = async (
+const UninstallApp = async (
   inputTask: SystemTaskObjectType,
   updateTask: (
     task: SystemTaskObjectType,
@@ -31,7 +31,10 @@ const InstallApp = async (
 
     let task = await updateTask(inputTask, {
       progress: 10,
-      log: [...inputTask.log, { time: new Date(), label: "Starting install" }],
+      log: [
+        ...inputTask.log,
+        { time: new Date(), label: "Starting uninstall" },
+      ],
     });
 
     // Type specific actions
@@ -52,33 +55,36 @@ const InstallApp = async (
               progress: currentProgress,
               log: [
                 ...inputTask.log,
-                { time: new Date(), label: "Installing models" },
+                { time: new Date(), label: "Cleaning up models" },
               ],
             });
 
-            const newModels = JSON.parse(remoteApp.models);
-
-            newModels.map((nm) => {
-              nm._id = new ObjectId(nm._id.$oid);
+            const modelKeys = [];
+            JSON.parse(remoteApp.models).map((nm) => {
+              modelKeys.push(new ObjectId(nm._id.$oid));
             });
 
-            await db.collection("models").insertMany(newModels);
+            await db
+              .collection("models")
+              .deleteMany({ _id: { $in: modelKeys } });
             break;
           case "objects":
             task = await updateTask(inputTask, {
               progress: currentProgress,
               log: [
                 ...inputTask.log,
-                { time: new Date(), label: "Installing objects" },
+                { time: new Date(), label: "Cleaning up objects" },
               ],
             });
-            const newObjects = JSON.parse(remoteApp.objects);
 
-            newObjects.map((nm) => {
-              nm._id = new ObjectId(nm._id.$oid);
+            const objectKeys = [];
+            JSON.parse(remoteApp.objects).map((nm) => {
+              objectKeys.push(new ObjectId(nm._id.$oid));
             });
 
-            await db.collection("objects").insertMany(newObjects);
+            await db
+              .collection("objects")
+              .deleteMany({ _id: { $in: objectKeys } });
             break;
           default:
             console.log(`Unknown install step type ${installStep.command}`);
@@ -102,4 +108,4 @@ const InstallApp = async (
   });
 };
 
-export default InstallApp;
+export default UninstallApp;

@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 import InstallApp from "./SystemTasks/install-app";
 import SystemUpdate from "./SystemTasks/system-update";
+import UninstallApp from "./SystemTasks/uninstall-app";
 import { SystemTaskObjectType } from "./Utils/Types";
 require("dotenv").config();
 
@@ -48,6 +49,9 @@ async function main() {
                 break;
               case "install-app":
                 InstallApp(document, updateTask, db);
+                break;
+              case "uninstall-app":
+                UninstallApp(document, updateTask, db);
                 break;
               default:
                 console.log(`Unknown task type: ${document.type}`);
