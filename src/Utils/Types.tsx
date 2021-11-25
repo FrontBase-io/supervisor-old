@@ -13,7 +13,8 @@ export interface ColorType {
 /* Object types */
 export interface SystemTaskObjectType extends ObjectType {
   description: string;
-  type: "system-update";
+  type: "system-update" | "install-app" | "uninstall-app";
   done: boolean;
   progress: number;
+  args?: { [key: string]: any };
 }

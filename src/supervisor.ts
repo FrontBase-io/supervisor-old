@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import InstallApp from "./SystemTasks/install-app";
 import SystemUpdate from "./SystemTasks/system-update";
 import { SystemTaskObjectType } from "./Utils/Types";
 require("dotenv").config();
@@ -44,6 +45,9 @@ async function main() {
             switch (document.type) {
               case "system-update":
                 SystemUpdate(document, updateTask);
+                break;
+              case "install-app":
+                InstallApp(document, updateTask, db);
                 break;
               default:
                 console.log(`Unknown task type: ${document.type}`);
