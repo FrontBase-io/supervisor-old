@@ -13,19 +13,30 @@ const SystemUpdate = async (
     progress: 1,
     log: [
       ...(inputTask.log || [{ time: new Date(), label: "Task started" }]),
-      { time: new Date(), label: "Client: Looking for updates" },
+      { time: new Date(), label: "Updating apps" },
     ],
   });
 
   let updateApplied = false;
 
+  // Step 1: Data
+  let result = await shell.exec("yarn updateApps");
+
   // Step 1: Client
-  let result = await shell.exec("git -C /opt/frontbase/system/client pull");
+  task = await updateTask(inputTask, {
+    progress: 10,
+    log: [
+      ...(inputTask.log || [{ time: new Date(), label: "Task started" }]),
+      { time: new Date(), label: "Client: Looking for updates" },
+    ],
+  });
+
+  result = await shell.exec("git -C /opt/frontbase/system/client pull");
   // Todo: does language matter here?
   if (!result.match("up to date")) {
     updateApplied = true;
     task = await updateTask(task, {
-      progress: 10,
+      progress: 15,
       log: [
         ...task.log,
         { time: new Date(), label: "-> Client: Installing update" },
