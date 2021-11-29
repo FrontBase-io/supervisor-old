@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import fetch from "node-fetch";
 import { find, cloneDeep, isEqual } from "lodash";
 
@@ -22,9 +22,11 @@ const updateApp = async (db, key: string) =>
             case "models":
               await updateModels(JSON.parse(remoteApp.models), db, logPrefix);
               break;
+            case "objects":
+              await updateObjects(JSON.parse(remoteApp.objects), db, logPrefix);
+              break;
             default:
               console.log(`${logPrefix} Unknown command ${step.command}`);
-
               break;
           }
 
@@ -138,6 +140,32 @@ const updateModels = (models, db: Db, logPrefix: string) =>
 
       return model;
     }, models[0]);
+
+    resolve();
+  });
+
+const updateObjects = (objects, db: Db, logPrefix: string) =>
+  new Promise<void>(async (resolve, reject) => {
+    const objectIds = objects.map((o) => new ObjectId(o._id.$oid));
+    const oldObjects = await (
+      await db.collection("objects").find({ _id: { $in: objectIds } })
+    ).toArray();
+
+    await objects.reduce(async (prev, object) => {
+      await prev;
+      const oldObject = find(oldObjects, (o) => o._id === object._id);
+      if (oldObject && !isEqual(oldObject, object)) {
+        console.log(`Object ${oldObject._id.$oid} has changed, updating!`);
+
+        delete object._id;
+
+        await db
+          .collection("objects")
+          .updateOne({ _id: oldObject._id }, { $set: object });
+      }
+
+      return object;
+    }, objects[0]);
 
     resolve();
   });
