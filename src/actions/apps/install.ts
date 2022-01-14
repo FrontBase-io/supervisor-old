@@ -11,7 +11,9 @@ const installApp = async (db, key: string) =>
     fetch(`https://frontbase.vtvc.nl/api/frontbase-apps/read?key=${key}`).then(
       async (response) => {
         // Success
-        const remoteApp = await response.json();
+        //@ts-ignore
+        const remoteApp: { install_script: any; models: any; objects: any } =
+          await response.json();
 
         const installScript = JSON.parse(remoteApp.install_script);
 
