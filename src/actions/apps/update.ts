@@ -1,6 +1,8 @@
 import { Db, ObjectId } from "mongodb";
-import fetch from "node-fetch";
 import { find, cloneDeep, isEqual } from "lodash";
+const fetch = (
+  ...args // @ts-ignore
+) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const updateApp = async (db, key: string) =>
   new Promise<void>((resolve, reject) => {
