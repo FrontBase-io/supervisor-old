@@ -35,7 +35,7 @@
     "dotenv": "^14.3.0",
     "express": "^4.17.2",
     "lodash": "^4.17.21",
-    "mongodb": "^4.3.0",
+    "mongodb": "^4.3.1",
     "node-fetch": "^3.2.0",
     "shelljs": "^0.8.5",
     "tsc": "^2.0.3",
