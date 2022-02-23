@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/mongodb": "^4.0.7",
-    "@types/node": "^17.0.12",
+    "@types/node": "^17.0.21",
     "pm2": "^5.1.2",
     "ts-node": "^10.4.0"
   }
